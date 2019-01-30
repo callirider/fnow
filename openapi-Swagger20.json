@@ -1,0 +1,454 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Terms of Service",
+    "description": "Serves legal text for all the content at M-GO. It also supports versioning of documents.",
+    "contact": {
+      "email": "fnowservices@fandango.com",
+      "name": "FandangoNOW Services Team"
+    }
+  },
+  "host": "prd.mgo.com",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/tos/v1/{docType}": {
+      "put": {
+        "description": "Signs the document and returns the version signed",
+        "summary": "Sign Document v1",
+        "tags": [
+          "v1"
+        ],
+        "operationId": "TosV1ByDocTypePut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "docType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "value is terms or privacy"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "body submission",
+            "schema": {
+              "$ref": "#/definitions/SignRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response contains what was accepted and terms",
+            "schema": {
+              "$ref": "#/definitions/AcceptedSignedResponse"
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Attempting to sign invalid/wrong version",
+            "schema": {}
+          },
+          "403": {
+            "description": "Authorization token missing/invalid",
+            "schema": {}
+          },
+          "404": {
+            "description": "Document/version not found",
+            "schema": {}
+          },
+          "default": {
+            "description": "Server error",
+            "schema": {}
+          }
+        }
+      },
+      "get": {
+        "description": "Returns the version signed the docType.",
+        "summary": "Get signed Document v1",
+        "tags": [
+          "v1"
+        ],
+        "operationId": "TosV1ByDocTypeGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "docType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "value is terms or privacy"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response contains what was accepted and terms",
+            "schema": {
+              "$ref": "#/definitions/Terms"
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Attempting to sign invalid/wrong version",
+            "schema": {}
+          },
+          "403": {
+            "description": "Authorization token missing/invalid",
+            "schema": {}
+          },
+          "404": {
+            "description": "Document/version not found",
+            "schema": {}
+          },
+          "default": {
+            "description": "Server error",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/tos/v2/{docType}": {
+      "post": {
+        "description": "Call when user needs to sign the docType document. For missing version, the latest version of the document is signed. The response could be a message saying the singing was successful or return an error if an incorrect version was attempted to be signed.",
+        "summary": "Sign Document v2",
+        "tags": [
+          "v2"
+        ],
+        "operationId": "TosV2ByDocTypePost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "docType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "value is terms or privacy"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "body submission",
+            "schema": {
+              "$ref": "#/definitions/SignRequestV2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response contains what was accepted and terms",
+            "schema": {
+              "$ref": "#/definitions/AcceptedSignedResponseV2"
+            },
+            "examples": {
+              "application/json": {
+                "msg": "document signed successfully"
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Attempting to sign invalid/wrong version",
+            "schema": {}
+          },
+          "403": {
+            "description": "Authorization token missing/invalid",
+            "schema": {}
+          },
+          "404": {
+            "description": "Document/version not found",
+            "schema": {}
+          },
+          "default": {
+            "description": "Server error",
+            "schema": {}
+          }
+        }
+      },
+      "get": {
+        "description": "Returns the legal document by the specified query parameter.",
+        "summary": "Get signed Document v2",
+        "tags": [
+          "v2"
+        ],
+        "operationId": "TosV2ByDocTypeGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "docType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "value is terms or privacy"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "version number"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "html, etc"
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "US"
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": "default"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response contains what was accepted and terms",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "application/json": "<p>Document Text</p>"
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Attempting to sign invalid/wrong version",
+            "schema": {}
+          },
+          "403": {
+            "description": "Authorization token missing/invalid",
+            "schema": {}
+          },
+          "404": {
+            "description": "Document/version not found",
+            "schema": {}
+          },
+          "default": {
+            "description": "Server error",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/tos/v2/:docType/version": {
+      "get": {
+        "description": "Call to get the latest version number of the document that the user is attempting to sign. If the user needs to sign a newer version of a document, the revalidate flag will indicate it.",
+        "summary": "Get signed version Document information v2",
+        "tags": [
+          "v2"
+        ],
+        "operationId": "TosV2DocTypeVersionGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response contains what was accepted and terms",
+            "schema": {
+              "$ref": "#/definitions/AcceptedVersionResponseV2"
+            },
+            "examples": {
+              "application/json": {
+                "currentVersion": 2,
+                "signedVersion": 1,
+                "revalidate": true
+              }
+            },
+            "headers": {}
+          },
+          "400": {
+            "description": "Attempting to sign invalid/wrong version",
+            "schema": {}
+          },
+          "403": {
+            "description": "Authorization token missing/invalid",
+            "schema": {}
+          },
+          "404": {
+            "description": "Document/version not found",
+            "schema": {}
+          },
+          "default": {
+            "description": "Server error",
+            "schema": {}
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Accepted": {
+      "title": "Accepted",
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "Version Number",
+          "type": "string"
+        },
+        "revalidate": {
+          "description": "true or false",
+          "type": "boolean"
+        }
+      }
+    },
+    "Terms": {
+      "title": "Terms",
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "Version Number",
+          "type": "string"
+        }
+      }
+    },
+    "AcceptedSignedResponse": {
+      "title": "AcceptedSignedResponse",
+      "type": "object",
+      "properties": {
+        "accepted": {
+          "$ref": "#/definitions/Accepted"
+        },
+        "terms": {
+          "$ref": "#/definitions/Terms"
+        }
+      }
+    },
+    "AcceptedSignedResponseV2": {
+      "title": "AcceptedSignedResponseV2",
+      "example": {
+        "msg": "document signed successfully"
+      },
+      "type": "object",
+      "properties": {
+        "msg": {
+          "description": "success or fail message",
+          "type": "string"
+        }
+      }
+    },
+    "AcceptedVersionResponseV2": {
+      "title": "AcceptedVersionResponseV2",
+      "example": {
+        "currentVersion": 2,
+        "signedVersion": 1,
+        "revalidate": true
+      },
+      "type": "object",
+      "properties": {
+        "currentVersion": {
+          "description": "current version",
+          "type": "integer",
+          "format": "int32"
+        },
+        "signedVersion": {
+          "description": "current signed version",
+          "type": "integer",
+          "format": "int32"
+        },
+        "revalidate": {
+          "description": "is newer version to sign available",
+          "type": "boolean"
+        }
+      }
+    },
+    "SignRequest": {
+      "title": "SignRequest",
+      "example": {
+        "version": "1"
+      },
+      "type": "object",
+      "properties": {
+        "version": {
+          "description": "Version Number",
+          "type": "string"
+        }
+      }
+    },
+    "SignRequestV2": {
+      "title": "SignRequestV2",
+      "example": {
+        "version": "1"
+      },
+      "type": "object",
+      "properties": {
+        "signVersion": {
+          "description": "Version Number",
+          "type": "string"
+        }
+      }
+    },
+    "TokenGrantType": {
+      "title": "TokenGrantType",
+      "description": "One of three possible values for each operation",
+      "example": "client_credentials",
+      "type": "string",
+      "enum": [
+        "client_credentials",
+        "authorization_code",
+        "refresh_token"
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "v1",
+      "description": "V1 Endpoints"
+    },
+    {
+      "name": "v2",
+      "description": ""
+    }
+  ]
+}
